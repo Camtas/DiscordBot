@@ -5,7 +5,6 @@ import crescent
 import hikari
 import miru
 from crescent.ext import docstrings
-from enum import Enum
 from PCBot.botdata import BotData
 from typing import Optional
 
@@ -26,7 +25,7 @@ tile_emojis = ['\N{LARGE YELLOW SQUARE}', '1️⃣', '2️⃣', '3️⃣', '4️
 
 
 class MineSweeperView(miru.View):
-    """Miri view with buttons to obtain each user's selection."""
+    """Miru view with button to draw up grid"""
     
     grid_size: int
     bomb_num: int
