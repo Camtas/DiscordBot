@@ -22,7 +22,7 @@ class Tile:
 
 
 tile_emojis = ['\N{LARGE YELLOW SQUARE}', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '\N{LARGE GREEN SQUARE}', '\N{BOMB}']
-
+message_callbacks = []
 
 class MineSweeperView(miru.View):
     """Miru view with button to draw up grid"""
@@ -38,6 +38,7 @@ class MineSweeperView(miru.View):
         self.grid_size = grid_size
         self.bomb_num = bomb_num
         self.grid = [ [Tile(0)]*grid_size for i in range(grid_size)]
+        message_callbacks.append(self.on_message_create)
         self.setup()
         
     def setup(self) -> None:
@@ -105,6 +106,17 @@ class MineSweeperView(miru.View):
     async def rock_button(self, ctx: miru.ViewContext,
                           button: miru.Button) -> None:
         await self.make_move(ctx)
+
+    async def on_message_create(self, event: hikari.MessageCreateEvent):
+        if event.message.author.is_bot:
+            return
+        await event.message.respond("Hello!")
+
+@plugin.include
+@crescent.event
+async def on_message_create(event: hikari.MessageCreateEvent):
+    for callback in message_callbacks:
+        await callback(event)
 
 
 @plugin.include
